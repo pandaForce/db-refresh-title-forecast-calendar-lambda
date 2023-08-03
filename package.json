@@ -1,0 +1,14 @@
+{
+  "name": "db-refresh-xero-archtek-tracking-options-lambda",
+  "description": "fetch salesforce records into firebase",
+  "version": "1.0.0",
+  "author": "Bozhao Yu",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.17.1",
+    "jsforce": "^1.11.1",
+    "request": "^2.88.0"
+  }
+}
