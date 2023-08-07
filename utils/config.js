@@ -28,8 +28,9 @@ const SALESFORCE_OAUTH_CONFIG = {
       redirectUri : process.env.REDIRECT_URI
     }
 
-
-
+module.exports.ENVIRONMENT = ENVIRONMENT
+module.exports.APP_NAME = APP_NAME
 module.exports.APP_SOQL = APP_SOQL
+module.exports.TRACKING_CATEGORY_ID = TRACKING_CATEGORY_ID
 module.exports.FIREBASE = FIREBASE
 module.exports.SALESFORCE_OAUTH_CONFIG = SALESFORCE_OAUTH_CONFIG
