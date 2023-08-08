@@ -13,7 +13,7 @@ const TRACKING_CATEGORY_ID =  {
 }
 
 const APP_SOQL =  {
-	TRACKING_CATEGORY_OPTIONS_SOQL : "select Id, TrackingCategoryID__c, TrackingOptionID__c , TrackingOptionName__c from ProWorkflowTrackingCategories__c where TrackingCategoryID__c = '" + TRACKING_CATEGORY_ID[APP_NAME][ENVIRONMENT] + "'",
+	TRACKING_CATEGORY_OPTIONS_SOQL : "select Id, ProworkflowProjectId__c , TrackingCategoryID__c, TrackingOptionID__c , TrackingOptionName__c from ProWorkflowTrackingCategories__c where TrackingCategoryID__c = '" + TRACKING_CATEGORY_ID[APP_NAME][ENVIRONMENT] + "'",
 }
 
 const FIREBASE = {
