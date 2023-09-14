@@ -8,12 +8,12 @@ const TRACKING_CATEGORY_ID =
         'Xero - Archtek' :
             {
                 'Production' : '701dd38b-a88f-44a9-b2d9-ac80dd499273',
-                'Sandbox' : '3fdeb151-2e7e-406b-8550-e5b161d87049'
+                'Sandbox' : '1d026937-d019-4cfd-bc84-7f5eae357039'
             }
     }
 const APP_SOQL = 
 {
-    TRACKING_CATEGORY_OPTIONS_SOQL : "select Id, ProjectNumber__c , ProjectStartYear__c , ProworkflowProjectId__c, TrackingCategoryID__c, TrackingOptionID__c , TrackingOptionName__c , Environment__c from ProWorkflowTrackingCategories__c where TrackingCategoryID__c = '" + TRACKING_CATEGORY_ID[APP_NAME][ENVIRONMENT] + "' AND Environment__c = '" + ENVIRONMENT + "'",
+    TRACKING_CATEGORY_OPTIONS_SOQL : "select Id, ProjectNumber__c , ProjectStartYear__c , TrackingCategoryID__c, TrackingOptionID__c , TrackingOptionName__c , Environment__c, Statuscode__c from ProWorkflowTrackingCategories__c where TrackingCategoryID__c = '" + TRACKING_CATEGORY_ID[APP_NAME][ENVIRONMENT] + "' AND Environment__c = '" + ENVIRONMENT + "' AND Statuscode__c = '200' AND ProjectNumber__c != null",
 }
 
 const FIREBASE = {
