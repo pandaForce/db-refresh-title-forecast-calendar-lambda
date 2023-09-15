@@ -13,7 +13,7 @@ const TRACKING_CATEGORY_ID =
     }
 const APP_SOQL = 
 {
-    TRACKING_CATEGORY_OPTIONS_SOQL : "select Id, ProjectNumber__c , ProjectStartYear__c , TrackingCategoryID__c, TrackingOptionID__c , TrackingOptionName__c , Environment__c, Statuscode__c from ProWorkflowTrackingCategories__c where TrackingCategoryID__c = '" + TRACKING_CATEGORY_ID[APP_NAME][ENVIRONMENT] + "' AND Environment__c = '" + ENVIRONMENT + "' AND Statuscode__c = '200' AND ProjectNumber__c != null",
+    TRACKING_CATEGORY_OPTIONS_SOQL : "select Id, ProjectNumber__c , ProjectStartYear__c , TrackingCategoryID__c, TrackingOptionID__c , TrackingOptionName__c , Environment__c, Statuscode__c from ProWorkflowTrackingCategories__c where TrackingCategoryID__c = '" + TRACKING_CATEGORY_ID[APP_NAME][ENVIRONMENT] + "' AND Environment__c = '" + ENVIRONMENT + "' AND Statuscode__c = '200' AND ProjectNumber__c != null AND TrackingOptionID__c != null",
 }
 
 const FIREBASE = {
