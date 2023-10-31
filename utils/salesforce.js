@@ -1,7 +1,8 @@
-const utilities = require("./utilities")
+require("dotenv").config();
+const utilities = require("./utilities");
 
-async function getTrackingCategoryOptions ( soql ) {
-      console.log ( ' \n inside getTrackingCategoryOptions '  )
+async function getRecords ( soql ) {
+      console.log ( ' \n inside getRecords '  )
       const soql_response = await utilities.runSoql ( soql )
       return new Promise ((resolve, reject) => {
             resolve ( soql_response )
@@ -15,5 +16,6 @@ async function createDbFetchTransactionRecord (  obj_name , record_data  ) {
       })
 }
 
-module.exports.getTrackingCategoryOptions =  getTrackingCategoryOptions
+module.exports.getRecords =  getRecords
 module.exports.createDbFetchTransactionRecord =  createDbFetchTransactionRecord
+
