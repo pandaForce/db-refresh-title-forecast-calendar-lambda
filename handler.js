@@ -1,8 +1,8 @@
 /*** version history
 			
-Date		                			version               			Developer       				Change Identifier                		 Change
+Date				version		Developer			Change Identifier			Change
 ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-03-Aug-2023					                V3.0.0					    Sumeet P.					             cr-230726		    		          Winston authorization error. Thumbnail quality issue after clickhomes server updagrade on 23-Jun-2023. IS-3268 : FW: Claim photos : setup Org for testing
+03-Aug-2023			V1.0.0		Sumeet P.			230221				Initial Dev. Extract Enquiry and MyEvent records from Salesforce into firebase
 ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 **/
 
