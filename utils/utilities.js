@@ -1,10 +1,10 @@
-const axios = require('axios')
-const jsforce = require('jsforce')
 require("dotenv").config();
-
+const jsforce = require("jsforce");
+const axios = require("axios");
 const custom_config = require("./config");
 
-// validate response of an async function
+
+//general - validate response of an async function
 const canContinueExecution = ( step_name , response_to_validate ) => {
       console.log ( 'continueExecution after ' + step_name + ' ? ' )
       let outcome = true
@@ -37,7 +37,7 @@ async function runSoql ( soql ) {
     })
 } 
 
-// salesforce
+//salesforce - insert
 async function insertSoql ( obj_name , record_data) {
       console.log ( ' inside insertSoql | record_data : ' + JSON.stringify ( record_data ) )
       return new Promise ((resolve, reject) => {
@@ -54,30 +54,29 @@ async function insertSoql ( obj_name , record_data) {
 }
 
 
-// firebase
-async function firebase_api_call ( call_type , rtdb , var_type , data ) {
-	console.log ( ' \n inside firebase_api_call ')
-	return new Promise ((resolve, reject) => {
-            axios.request ( firebaseConfigPrep ( call_type , rtdb , var_type , data )  )
-            .then((response) => { resolve ( { statuscode : response.status ,  data : response.data} )})
-            .catch((err) => {
-                  console.log ( err )
-                  resolve ( { statuscode : 400 ,  data : err.stack.toString() } )
-            });
-	})
-}
+// // firebase
+// async function firebase_api_call ( call_type , rtdb , var_type , data ) {
+// 	console.log ( ' \n inside firebase_api_call ')
+// 	return new Promise ((resolve, reject) => {
+//             axios.request ( firebaseConfigPrep ( call_type , rtdb , var_type , data )  )
+//             .then((response) => { resolve ( { statuscode : response.status ,  data : response.data} )})
+//             .catch((err) => {
+//                   console.log ( err )
+//                   resolve ( { statuscode : 400 ,  data : err.stack.toString() } )
+//             });
+// 	})
+// }
 
-// firebase
-const firebaseConfigPrep = ( call_type , rtdb , var_type , data ) => {
-      return {
-            method: call_type ,
-            url: rtdb + var_type ,
-            headers: { } ,
-            data : data
-      }
-}
+// const firebaseConfigPrep = ( call_type , rtdb , var_type , data ) => {
+//       return {
+//             method: call_type ,
+//             url: rtdb + var_type ,
+//             headers: { } ,
+//             data : data
+//       }
+// }
 
 module.exports.runSoql = runSoql
 module.exports.insertSoql = insertSoql
 module.exports.canContinueExecution =  canContinueExecution
-module.exports.firebase_api_call =  firebase_api_call
+// module.exports.firebase_api_call =  firebase_api_call

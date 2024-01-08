@@ -1,33 +1,18 @@
-/*** version history
-			
-Date				version		Developer			Change Identifier			Change
-________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-11-Dec-2023			V1.0.0		Sumeet P.			230221				Initial Dev. Extract land records waiting to title
-________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-**/
+const custom_config = require("../config")
+const salesforce = require("./salesforce")
+const utilities = require("./utilities")
+const firebase_util = require("./firebase_util")
 
-const custom_config = require("./utils/config");
-const salesforce = require("./utils/salesforce")
-const utilities = require("./utils/utilities")
-const firebase_util = require("./utils/firebase_util")
-
-// lambda handler 
-module.exports.db_fetch_handler = (event, context, callback) => {
-	startProcessing ( callback )
-}
-
-// main
-async function startProcessing ( callback  ) {
-
+async function startProcessing ( res ) {
+      
       let response 
 
-      // salesforce.get land records
+      // salesforce.get enquiries
       const titled_lots = await salesforce.getRecords ( custom_config.APP_SOQL.TITLED_LOTS )      
       if ( ! utilities.canContinueExecution ( 'getRecords-titled_lots' , titled_lots  ) ) { res.send ( titled_lots ) ; return }
 
       console.log ( ' titled_lots.statuscode : ' + titled_lots.statuscode )
       console.log ( ' titled_lots.data.length : ' + titled_lots.data.length )
-
 
       // authenticate : firebase
       const firebase_authentication = await firebase_util.getAuthToken ( process.env.FIREBASE_API_KEY , process.env.FIREBASE_USER_NAME , process.env.FIREBASE_USER_PASSWORD )
@@ -45,15 +30,14 @@ async function startProcessing ( callback  ) {
       response = await salesforce.createDbFetchTransactionRecord ( 'DBRefresh__c' , { App__c : custom_config.APP_NAME , StatusCode__c : response.statuscode , TotalRecordsFetched__c : titled_lots.data.length , Data__c : custom_config.DATA_TYPE } )
       if ( ! utilities.canContinueExecution ( 'insertSoql' , response  ) ) { res.send ( response ) ; return }
 
-      
       //  *** FORCE END
-      // callback ( null, { statusCode: 200, body: JSON.stringify ( { titled_lots } ) } )
-      // callback ( null, { statusCode: 200, body: JSON.stringify ( { firebase_authentication } ) } )
-      // callback ( null, { statusCode: 200, body: JSON.stringify ( { payload_to_update } ) } )
-      callback ( null, { statusCode: 200, body: JSON.stringify ( { response } ) } )
+      // res.send ( titled_lots )
+      // res.send ( firebase_authentication )
+      // res.send ( payload_to_update )
+      res.send ( response )
       return
-
+     
 
 }
 
-
+module.exports.startProcessing =  startProcessing
