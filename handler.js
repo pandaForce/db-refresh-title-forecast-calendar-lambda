@@ -28,6 +28,12 @@ async function startProcessing ( callback  ) {
       console.log ( ' titled_lots.statuscode : ' + titled_lots.statuscode )
       console.log ( ' titled_lots.data.length : ' + titled_lots.data.length )
 
+            // salesforce.HL1090_LOTS
+            const hl1090_lots = await salesforce.getRecords ( custom_config.APP_SOQL.HL1090_LOTS )      
+            if ( ! utilities.canContinueExecution ( 'getRecords-hl1090_lots' , titled_lots  ) ) { res.send ( titled_lots ) ; return }
+
+            console.log ( ' hl1090_lots.statuscode : ' + hl1090_lots.statuscode )
+            console.log ( ' hl1090_lots.data.length : ' + hl1090_lots.data.length )      
 
       // authenticate : firebase
       const firebase_authentication = await firebase_util.getAuthToken ( process.env.FIREBASE_API_KEY , process.env.FIREBASE_USER_NAME , process.env.FIREBASE_USER_PASSWORD )
@@ -35,7 +41,7 @@ async function startProcessing ( callback  ) {
       
       console.log ( ' firebase_authentication.data.idToken : ' + firebase_authentication.data.idToken )
 
-      const payload_to_update = { statuscode : titled_lots.statuscode , data : titled_lots.data } 
+      const payload_to_update = { statuscode : titled_lots.statuscode , data : titled_lots.data , hl1090_lots : hl1090_lots.data  } 
 
       // update firebase
       response = await firebase_util.getData ( 'put' , payload_to_update , custom_config.FIREBASE.RTDB_BASE + custom_config.FIREBASE.RTDB_VAR + '?auth=' +  firebase_authentication.data.idToken  )
