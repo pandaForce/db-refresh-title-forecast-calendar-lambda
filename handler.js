@@ -40,7 +40,7 @@ async function startProcessing ( callback  ) {
       }, [])
 
       titled_lots.statuscode =  titled_lots_statusdev_transformed.statuscode
-      titled_lots.data =  { ...titled_lots_statusdev_transformed.data  }
+      titled_lots.data =  [ ...titled_lots_statusdev_transformed.data  ]
       
       // salesforce.HL1090_LOTS
       const hl1090_lots = await salesforce.getRecords ( custom_config.APP_SOQL.HL1090_LOTS )      
