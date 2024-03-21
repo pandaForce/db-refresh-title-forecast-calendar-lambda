@@ -28,12 +28,26 @@ async function startProcessing ( callback  ) {
       console.log ( ' titled_lots.statuscode : ' + titled_lots.statuscode )
       console.log ( ' titled_lots.data.length : ' + titled_lots.data.length )
 
-            // salesforce.HL1090_LOTS
-            const hl1090_lots = await salesforce.getRecords ( custom_config.APP_SOQL.HL1090_LOTS )      
-            if ( ! utilities.canContinueExecution ( 'getRecords-hl1090_lots' , titled_lots  ) ) { res.send ( titled_lots ) ; return }
+      //mutate StatusDev from Withheld to Availalbe [ applicable only for Nomura ]
+      const titled_lots_statusdev_transformed = {} 
+      titled_lots_statusdev_transformed.statuscode = titled_lots.statuscode
+      titled_lots_statusdev_transformed.data = titled_lots.data.reduce((ret_val, o) => 
+      { 
+          let new_obj =  { ...o }
+          new_obj.StatusDevr__c = o.StatusDevr__c == 'Withheld' ? 'Available' : o.StatusDevr__c
+            ret_val.push ( { ...new_obj } )
+            return ret_val
+      }, [])
 
-            console.log ( ' hl1090_lots.statuscode : ' + hl1090_lots.statuscode )
-            console.log ( ' hl1090_lots.data.length : ' + hl1090_lots.data.length )      
+      titled_lots.statuscode =  titled_lots_statusdev_transformed.statuscode
+      titled_lots.data =  { ...titled_lots_statusdev_transformed.data  }
+      
+      // salesforce.HL1090_LOTS
+      const hl1090_lots = await salesforce.getRecords ( custom_config.APP_SOQL.HL1090_LOTS )      
+      if ( ! utilities.canContinueExecution ( 'getRecords-hl1090_lots' , titled_lots  ) ) { res.send ( titled_lots ) ; return }
+
+      console.log ( ' hl1090_lots.statuscode : ' + hl1090_lots.statuscode )
+      console.log ( ' hl1090_lots.data.length : ' + hl1090_lots.data.length )      
 
       // authenticate : firebase
       const firebase_authentication = await firebase_util.getAuthToken ( process.env.FIREBASE_API_KEY , process.env.FIREBASE_USER_NAME , process.env.FIREBASE_USER_PASSWORD )
