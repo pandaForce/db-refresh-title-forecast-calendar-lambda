@@ -19,6 +19,8 @@ module.exports.db_fetch_handler = (event, context, callback) => {
 // main
 async function startProcessing ( callback  ) {
 
+      let response 
+
       // salesforce.stage_data
       const stage_data = await salesforce.getRecords ( custom_config.APP_SOQL.STAGE_DATA )      
       if ( ! utilities.canContinueExecution ( 'getRecords-stage_data' , stage_data  ) ) { res.send ( stage_data ) ; return }
@@ -42,20 +44,25 @@ async function startProcessing ( callback  ) {
       console.log ( ' hl1090_data.statuscode : ' + hl1090_data.statuscode )
       console.log ( ' hl1090_data.data.length : ' + hl1090_data.data.length )
 
-
       const townhouse_data = await salesforce.getRecords ( custom_config.APP_SOQL.TOWNHOUSE_DATA )      
       if ( ! utilities.canContinueExecution ( 'getRecords-townhouse_data' , hl1090_data  ) ) { res.send ( townhouse_data ) ; return }
 
       console.log ( ' townhouse_data.statuscode : ' + townhouse_data.statuscode )
       console.log ( ' townhouse_data.data.length : ' + townhouse_data.data.length )
-      
+
+      const lots_data = await salesforce.getRecords ( custom_config.APP_SOQL.LOTS_DATA )      
+      if ( ! utilities.canContinueExecution ( 'getRecords-lots_data' , lots_data  ) ) { res.send ( lots_data ) ; return }
+
+      console.log ( ' lots_data.statuscode : ' + lots_data.statuscode )
+      console.log ( ' lots_data.data.length : ' + lots_data.data.length )
+
       // authenticate : firebase
       const firebase_authentication = await firebase_util.getAuthToken ( process.env.FIREBASE_API_KEY , process.env.FIREBASE_USER_NAME , process.env.FIREBASE_USER_PASSWORD )
       if ( ! utilities.canContinueExecution ( 'firebase_util.getAuthToken' , firebase_authentication  ) ) { await closingFunction ( custom_config.log_file_string ,  res , 'firebase_util.getAuthToken' , JSON.stringify ( { api_key : process.env.FIREBASE_API_KEY , user_name : process.env.FIREBASE_USER_NAME , pwd : process.env.FIREBASE_USER_PASSWORD } ) , JSON.stringify ( firebase_authentication )  , 'Error' )  ; return }
       
       console.log ( ' firebase_authentication.data.idToken : ' + firebase_authentication.data.idToken )
 
-      const payload_to_update = { statuscode : stage_data.statuscode , data : effective_stage_data , hl1090data : hl1090_data.data , townhousedata : townhouse_data.data  } 
+      const payload_to_update = { statuscode : stage_data.statuscode , data : effective_stage_data , hl1090data : hl1090_data.data , townhousedata : townhouse_data.data , lots_data : lots_data.data } 
 
       // update firebase
       response = await firebase_util.getData ( 'put' , payload_to_update , custom_config.FIREBASE.RTDB_BASE + custom_config.FIREBASE.RTDB_VAR + '?auth=' +  firebase_authentication.data.idToken  )
