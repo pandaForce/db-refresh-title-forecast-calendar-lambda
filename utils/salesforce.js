@@ -18,4 +18,3 @@ async function createDbFetchTransactionRecord (  obj_name , record_data  ) {
 
 module.exports.getRecords =  getRecords
 module.exports.createDbFetchTransactionRecord =  createDbFetchTransactionRecord
-
